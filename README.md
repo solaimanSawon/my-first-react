@@ -1,127 +1,40 @@
 # Customer Support Zone
 
-This project is built with React and Vite for Assignment-02.
-
-## What is JSX, and why is it used?
-
-JSX stands for JavaScript XML. It is a syntax extension that lets us write UI structure using HTML-like tags inside JavaScript.
-
-Why it is used:
-
-- Makes component UI easier to read and maintain.
-- Lets us combine logic and markup in one place.
-- React converts JSX into `React.createElement(...)` calls, which become virtual DOM objects.
-
-## What is the difference between State and Props?
-
-- `Props` are inputs passed from a parent component to a child component.
-- `State` is local data managed inside a component.
-
-Main differences:
-
-- `Props` are read-only in the receiving component.
-- `State` can change over time using state setters.
-- Changes in both props and state can trigger re-renders.
-
-## What is the useState hook, and how does it work?
-
-`useState` is a React hook used to add state to functional components.
-
-Example:
-
-```jsx
-const [count, setCount] = useState(0)
-```
-
-- `count` is the current state value.
-- `setCount` updates that value.
-- Calling `setCount` schedules a re-render with the new state.
-
-## How can you share state between components in React?
-
-Common ways:
-
-- Lift state up to the nearest common parent and pass data/functions via props.
-- Use Context API for global/shared state across many levels.
-- Use external state libraries (like Redux, Zustand) for larger apps.
-
-In this project, ticket state is managed in the main component and passed to sections that need it.
-
-## How is event handling done in React?
-
-React handles events using camelCase props and function handlers.
-
-Examples:
-
-- `onClick={handleClick}`
-- `onChange={handleInput}`
-- `onSubmit={handleSubmit}`
-
-The handler function receives a synthetic event object. We can use methods like `event.preventDefault()` when needed.
+Customer Support Zone is a React + Vite project for Assignment-02. It helps support teams manage customer tickets by moving tasks from open to in-progress to resolved.
 
 ## Project Links
 
 - Live Link: https://my-first-react.vercel.app
 - GitHub Repository: https://github.com/solaimanSawon/my-first-react
 
-## React Deployment Guide
+## What is JSX, and why is it used?
 
-### 1. Pre-Deployment
+JSX (JavaScript XML) lets us write HTML-like UI code inside JavaScript. It is used because it makes components easier to read and maintain, and React converts it into JavaScript objects for rendering.
 
-Before deploying, make sure the app is production-ready:
+## What is the difference between State and Props?
 
-- Run build command:
+- `Props` are read-only data passed from parent to child.
+- `State` is mutable local data managed inside a component.
+- Both can trigger re-renders when values change.
 
-```bash
-npm run build
+## What is the useState hook, and how does it work?
+
+`useState` adds state to functional components.
+
+```jsx
+const [count, setCount] = useState(0)
 ```
 
-- Confirm production environment variables are set correctly.
+- `count` is the current value.
+- `setCount` updates the value.
+- Updating state causes React to re-render the component.
 
-### 2. Deploying to Vercel
+## How can you share state between components in React?
 
-#### Method A: Git Integration
+- Lift state to a common parent and pass data/functions through props.
+- Use Context API for deeper component trees.
+- Use state libraries for large apps when needed.
 
-1. Push your code to GitHub or GitLab.
-2. Connect the repository in the Vercel Dashboard.
-3. Vercel auto-detects settings. Click `Deploy`.
+## How is event handling done in React?
 
-#### Method B: Vercel CLI
-
-1. Install the CLI:
-
-```bash
-npm install -g vercel
-```
-
-2. Run from project root:
-
-```bash
-vercel
-```
-
-3. For final production release:
-
-```bash
-vercel --prod
-```
-
-### 3. Vercel SPA Routing Fix
-
-Create `vercel.json` in the project root:
-
-```json
-{
-	"rewrites": [
-		{
-			"source": "/:path*",
-			"destination": "/index.html"
-		}
-	]
-}
-```
-
-### 4. Common Fixes
-
-- `404 on refresh`: Ensure `vercel.json` rewrite rule is present.
-- `API errors`: Check that `VITE_API_URL` points to the production API, not localhost.
+React uses camelCase event props and handler functions, such as `onClick`, `onChange`, and `onSubmit`. Handlers receive an event object and can call methods like `event.preventDefault()`.
