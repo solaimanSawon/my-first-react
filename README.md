@@ -4,7 +4,7 @@ Customer Support Zone is a React + Vite project for Assignment-02. It helps supp
 
 ## Project Links
 
-- Live Link: https://my-first-react.vercel.app
+- Live Link: https://my-first-react-ashy.vercel.app/?_vercel_share=hZJn7vqrNPweNi96wIV0lHKZYVpqVZPa
 - GitHub Repository: https://github.com/solaimanSawon/my-first-react
 
 ## What is JSX, and why is it used?
