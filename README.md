@@ -61,7 +61,7 @@ The handler function receives a synthetic event object. We can use methods like 
 
 ## Project Links
 
-- Live Link: YOUR_DEPLOYED_URL_HERE
+- Live Link: https://my-first-react.vercel.app
 - GitHub Repository: https://github.com/solaimanSawon/my-first-react
 
 ## React Deployment Guide
