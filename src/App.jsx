@@ -130,6 +130,8 @@ function App() {
   const [tickets, setTickets] = useState(initialTickets)
   const [inProgressTickets, setInProgressTickets] = useState([])
   const [resolvedTickets, setResolvedTickets] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [priorityFilter, setPriorityFilter] = useState('All')
 
   const inProgressCount = inProgressTickets.length
   const resolvedCount = resolvedTickets.length
@@ -138,6 +140,20 @@ function App() {
     () => tickets.filter((ticket) => !inProgressTickets.some((item) => item.id === ticket.id)),
     [tickets, inProgressTickets],
   )
+
+  const visibleOpenTickets = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase()
+
+    return openTickets.filter((ticket) => {
+      const matchesPriority = priorityFilter === 'All' || ticket.priority === priorityFilter
+      const matchesSearch =
+        term.length === 0 ||
+        ticket.title.toLowerCase().includes(term) ||
+        ticket.customer.toLowerCase().includes(term)
+
+      return matchesPriority && matchesSearch
+    })
+  }, [openTickets, priorityFilter, searchTerm])
 
   const handleAssignTicket = (ticket) => {
     if (inProgressTickets.some((item) => item.id === ticket.id)) {
@@ -208,11 +224,34 @@ function App() {
         <section id="tickets" className="ticket-panel">
           <div className="section-heading">
             <h3>Customer Tickets</h3>
-            <span>{openTickets.length} open</span>
+            <span>
+              {visibleOpenTickets.length} showing of {openTickets.length} open
+            </span>
+          </div>
+
+          <div className="ticket-tools" aria-label="Ticket filters">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search by ticket title or customer"
+            />
+
+            <select
+              value={priorityFilter}
+              onChange={(event) => setPriorityFilter(event.target.value)}
+              aria-label="Filter by priority"
+            >
+              <option value="All">All priorities</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Critical">Critical</option>
+            </select>
           </div>
 
           <div className="ticket-grid">
-            {openTickets.map((ticket) => (
+            {visibleOpenTickets.map((ticket) => (
               <article
                 key={ticket.id}
                 className="ticket-card"
@@ -240,6 +279,10 @@ function App() {
                 </footer>
               </article>
             ))}
+
+            {visibleOpenTickets.length === 0 ? (
+              <p className="empty-state ticket-empty">No tickets match the current search or filter.</p>
+            ) : null}
           </div>
         </section>
 
