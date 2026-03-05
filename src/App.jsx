@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
@@ -126,10 +126,47 @@ const initialTickets = [
   },
 ]
 
+const STORAGE_KEY = 'support-zone-state-v1'
+
 function App() {
-  const [tickets, setTickets] = useState(initialTickets)
-  const [inProgressTickets, setInProgressTickets] = useState([])
-  const [resolvedTickets, setResolvedTickets] = useState([])
+  const [tickets, setTickets] = useState(() => {
+    if (typeof window === 'undefined') {
+      return initialTickets
+    }
+
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null')
+      return Array.isArray(parsed?.tickets) ? parsed.tickets : initialTickets
+    } catch {
+      return initialTickets
+    }
+  })
+
+  const [inProgressTickets, setInProgressTickets] = useState(() => {
+    if (typeof window === 'undefined') {
+      return []
+    }
+
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null')
+      return Array.isArray(parsed?.inProgressTickets) ? parsed.inProgressTickets : []
+    } catch {
+      return []
+    }
+  })
+
+  const [resolvedTickets, setResolvedTickets] = useState(() => {
+    if (typeof window === 'undefined') {
+      return []
+    }
+
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null')
+      return Array.isArray(parsed?.resolvedTickets) ? parsed.resolvedTickets : []
+    } catch {
+      return []
+    }
+  })
   const [searchTerm, setSearchTerm] = useState('')
   const [priorityFilter, setPriorityFilter] = useState('All')
 
@@ -182,6 +219,13 @@ function App() {
   const handleNewTicketClick = () => {
     toast.info('Ticket form integration is ready for the next feature.')
   }
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ tickets, inProgressTickets, resolvedTickets }),
+    )
+  }, [tickets, inProgressTickets, resolvedTickets])
 
   return (
     <div className="support-app">
